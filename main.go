@@ -57,14 +57,18 @@ func containsInt(s []int, e int) bool {
 }
 
 // ParseMicroName parse micro name to support call micro with namespace
-func ParseMicroName(microName string) (string, string) {
+func ParseMicroName(microName string, namespace string) (string, string) {
 
 	f := func(c rune) bool {
 		return c == 46 // .
 	}
 	datas := strings.FieldsFunc(microName, f)
 	if len(datas) < 2 {
-		return microName, ""
+		return microName, namespace
+	}
+	if namespace != "" {
+		return strings.Join(datas, "/"), namespace
+
 	}
 	return strings.Join(datas[0:len(datas)-1], "/"), datas[len(datas)-1]
 }
